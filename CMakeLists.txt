@@ -5,14 +5,19 @@ project(Raylib C)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-set(RAYLIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/external/raylib/build/raylib)
+set(RAYLIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/external/raylib)
+set(RAYLIB_BUILD_PATH ${RAYLIB_PATH}/build/raylib)
 
-if (NOT EXISTS ${RAYLIB_PATH})
+if (NOT EXISTS ${RAYLIB_BUILD_PATH})
     message(FATAL_ERROR "Raylib has not ben compiled, run the setup script")
 endif()
 
-set(RAYLIB_LIB ${RAYLIB_PATH}/libraylib.a)
-set(RAYLIB_HEADERS ${RAYLIB_PATH}/include)
+if (NOT EXISTS ${RAYLIB_BUILD_PATH}/include/rcamera.h)
+    configure_file(${RAYLIB_PATH}/src/rcamera.h ${RAYLIB_BUILD_PATH}/include COPYONLY)
+endif()
+
+set(RAYLIB_LIB ${RAYLIB_BUILD_PATH}/libraylib.a)
+set(RAYLIB_HEADERS ${RAYLIB_BUILD_PATH}/include)
 
 set(SRC "src/main.c")
 
